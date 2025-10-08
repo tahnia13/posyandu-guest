@@ -7,7 +7,7 @@ use App\Http\Controllers\PosyanduController;
 Route::get('/', [AuthController::class, 'index'])->name('auth.index');
 Route::get('/auth', [AuthController::class, 'index'])->name('auth.index');
 
-// Login pakai AJAX (POST)
+
 Route::post('/auth/login', [AuthController::class, 'login'])->name('auth.login');
 
 Route::get('/berhasil', function () {

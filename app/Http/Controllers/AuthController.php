@@ -13,8 +13,7 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        // tampilkan data dari form (buat debug dulu, bisa dihapus nanti)
-        // dd($request->all());
+ 
 
         $request->validate([
             'username' => 'required',
@@ -26,7 +25,7 @@ class AuthController extends Controller
             'password.regex' => 'Password harus mengandung huruf kapital.'
         ]);
 
-        // Simulasi login sederhana
+        
         if ($request->username === 'Admin' && $request->password === 'TesAja123') {
             return response()->json([
                 'status' => 'success',
