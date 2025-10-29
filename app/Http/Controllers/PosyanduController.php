@@ -3,120 +3,124 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Posyandu;
+use Illuminate\Support\Facades\Storage;
 
 class PosyanduController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    // Menampilkan semua posyandu
     public function index()
     {
-        // Data dummy untuk demo
-        $dataPosyandu = [
-            [
-                'id' => 1,
-                'nama_balita' => 'Ahmad Susanto',
-                'usia' => '2 tahun 3 bulan',
-                'nama_ibu' => 'Siti Rahayu',
-                'alamat' => 'Jl. Merdeka No. 123',
-                'tanggal_periksa' => '2024-01-15'
-            ],
-            [
-                'id' => 2,
-                'nama_balita' => 'Budi Santoso',
-                'usia' => '1 tahun 8 bulan',
-                'nama_ibu' => 'Maya Sari',
-                'alamat' => 'Jl. Sudirman No. 45',
-                'tanggal_periksa' => '2024-01-16'
-            ]
-        ];
-
-        return view('posyandu.index');
+        // Gunakan query sederhana dulu
+        $posyandus = Posyandu::where('status', 'active')
+                           ->orderBy('created_at', 'desc')
+                           ->get();
+        
+        return view('posyandu.index', compact('posyandus'));
     }
-
-    /**
-     * Show the form for creating a new resource.
-     */
+    // Menampilkan form tambah posyandu
     public function create()
     {
         return view('posyandu.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    // Menyimpan posyandu baru
     public function store(Request $request)
     {
-        // Validasi data
-        $request->validate([
-            'nama_balita' => 'required|string|max:255',
-            'usia' => 'required|string',
-            'nama_ibu' => 'required|string|max:255',
+        $validated = $request->validate([
+            'nama_posyandu' => 'required|string|max:255',
             'alamat' => 'required|string',
-            'tanggal_periksa' => 'required|date'
+            'kelurahan' => 'required|string|max:255',
+            'kecamatan' => 'required|string|max:255',
+            'kota' => 'required|string|max:255',
+            'provinsi' => 'required|string|max:255',
+            'telepon' => 'nullable|string|max:15',
+            'email' => 'nullable|email',
+            'penanggung_jawab' => 'required|string|max:255',
+            'jam_operasional_buka' => 'required|date_format:H:i',
+            'jam_operasional_tutup' => 'required|date_format:H:i',
+            'fasilitas' => 'nullable|string',
+            'layanan' => 'nullable|string',
+            'latitude' => 'nullable|numeric',
+            'longitude' => 'nullable|numeric',
+            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        // Dalam real application, simpan ke database
-        // Untuk demo, redirect dengan success message
-        return redirect()->route('posyandu.index')
-                        ->with('success', 'Data balita berhasil ditambahkan!');
+        // Upload gambar jika ada
+        if ($request->hasFile('gambar')) {
+            $validated['gambar'] = $request->file('gambar')->store('posyandu', 'public');
+        }
+
+        Posyandu::create($validated);
+
+        return redirect()->route('posyandu.index')->with('success', 'Posyandu berhasil ditambahkan!');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-     {
-        // PERUBAHAN DI SINI: Tambahkan with('anggota')
-        $posyandu = Posyandu::with('anggota')->findOrFail($id);
-        
-        return view('guest.posyandu-show', compact('posyandu'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    // Menampilkan detail posyandu
+    public function show($id)
     {
-        // Data dummy untuk demo
-        $balita = [
-            'id' => $id,
-            'nama_balita' => 'Ahmad Susanto',
-            'usia' => '2 tahun 3 bulan',
-            'nama_ibu' => 'Siti Rahayu',
-            'alamat' => 'Jl. Merdeka No. 123',
-            'tanggal_periksa' => '2024-01-15'
-        ];
-
-        return view('posyandu.edit', compact('balita'));
+        $posyandu = Posyandu::findOrFail($id);
+        return view('posyandu.show', compact('posyandu'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    // Menampilkan form edit posyandu
+    public function edit($id)
     {
-        // Validasi data
-        $request->validate([
-            'nama_balita' => 'required|string|max:255',
-            'usia' => 'required|string',
-            'nama_ibu' => 'required|string|max:255',
+        $posyandu = Posyandu::findOrFail($id);
+        return view('posyandu.edit', compact('posyandu'));
+    }
+
+    // Update posyandu
+    public function update(Request $request, $id)
+    {
+        $posyandu = Posyandu::findOrFail($id);
+
+        $validated = $request->validate([
+            'nama_posyandu' => 'required|string|max:255',
             'alamat' => 'required|string',
-            'tanggal_periksa' => 'required|date'
+            'kelurahan' => 'required|string|max:255',
+            'kecamatan' => 'required|string|max:255',
+            'kota' => 'required|string|max:255',
+            'provinsi' => 'required|string|max:255',
+            'telepon' => 'nullable|string|max:15',
+            'email' => 'nullable|email',
+            'penanggung_jawab' => 'required|string|max:255',
+            'jam_operasional_buka' => 'required|date_format:H:i',
+            'jam_operasional_tutup' => 'required|date_format:H:i',
+            'fasilitas' => 'nullable|string',
+            'layanan' => 'nullable|string',
+            'latitude' => 'nullable|numeric',
+            'longitude' => 'nullable|numeric',
+            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'status' => 'required|in:active,inactive',
         ]);
 
-        // Dalam real application, update ke database
-        return redirect()->route('posyandu.index')
-                        ->with('success', 'Data balita berhasil diperbarui!');
+        // Upload gambar baru jika ada
+        if ($request->hasFile('gambar')) {
+            // Hapus gambar lama jika ada
+            if ($posyandu->gambar) {
+                Storage::disk('public')->delete($posyandu->gambar);
+            }
+            $validated['gambar'] = $request->file('gambar')->store('posyandu', 'public');
+        }
+
+        $posyandu->update($validated);
+
+        return redirect()->route('posyandu.index')->with('success', 'Posyandu berhasil diperbarui!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    // Hapus posyandu
+    public function destroy($id)
     {
-        // Dalam real application, hapus dari database
-        return redirect()->route('posyandu.index')
-                        ->with('success', 'Data balita berhasil dihapus!');
+        $posyandu = Posyandu::findOrFail($id);
+
+        // Hapus gambar jika ada
+        if ($posyandu->gambar) {
+            Storage::disk('public')->delete($posyandu->gambar);
+        }
+
+        $posyandu->delete();
+
+        return redirect()->route('posyandu.index')->with('success', 'Posyandu berhasil dihapus!');
     }
 }
