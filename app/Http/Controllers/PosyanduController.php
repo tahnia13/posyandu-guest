@@ -6,42 +6,117 @@ use Illuminate\Http\Request;
 
 class PosyanduController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        // Data dummy untuk demo
+        $dataPosyandu = [
+            [
+                'id' => 1,
+                'nama_balita' => 'Ahmad Susanto',
+                'usia' => '2 tahun 3 bulan',
+                'nama_ibu' => 'Siti Rahayu',
+                'alamat' => 'Jl. Merdeka No. 123',
+                'tanggal_periksa' => '2024-01-15'
+            ],
+            [
+                'id' => 2,
+                'nama_balita' => 'Budi Santoso',
+                'usia' => '1 tahun 8 bulan',
+                'nama_ibu' => 'Maya Sari',
+                'alamat' => 'Jl. Sudirman No. 45',
+                'tanggal_periksa' => '2024-01-16'
+            ]
+        ];
 
-   public function index()
-{
-    $data = [
-        [
-            'id' => 1,
-            'nama' => 'Posyandu Melati',
-            'alamat' => 'Jl. Mawar No.1',
-            'rt' => '01',
-            'rw' => '02',
-            'kontak' => '08123456789',
-            'foto' => 'melati.jpg',
-            'alat_media' => 'Timbangan bayi, Alat ukur tinggi badan, Buku KIA'
-        ],
-        [
-            'id' => 2,
-            'nama' => 'Posyandu Anggrek',
-            'alamat' => 'Jl. Kenanga No.2',
-            'rt' => '03',
-            'rw' => '04',
-            'kontak' => '08129876543',
-            'foto' => 'anggrek.jpg',
-            'alat_media' => 'Tensi meter, Stetoskop, Poster gizi'
-        ],
-    ];
-    return view('posyandu.index', compact('data'));
-}
+        return view('posyandu.index');
+    }
 
+    /**
+     * Show the form for creating a new resource.
+     */
     public function create()
     {
         return view('posyandu.create');
     }
 
-    public function edit($id)
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
     {
-        $posyandu = ['id' => $id, 'nama' => 'Posyandu Dummy', 'alamat' => 'Jl. Contoh', 'rt' => '05', 'rw' => '06', 'kontak' => '0812000111'];
-        return view('posyandu.edit', compact('posyandu'));
+        // Validasi data
+        $request->validate([
+            'nama_balita' => 'required|string|max:255',
+            'usia' => 'required|string',
+            'nama_ibu' => 'required|string|max:255',
+            'alamat' => 'required|string',
+            'tanggal_periksa' => 'required|date'
+        ]);
+
+        // Dalam real application, simpan ke database
+        // Untuk demo, redirect dengan success message
+        return redirect()->route('posyandu.index')
+                        ->with('success', 'Data balita berhasil ditambahkan!');
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
+     {
+        // PERUBAHAN DI SINI: Tambahkan with('anggota')
+        $posyandu = Posyandu::with('anggota')->findOrFail($id);
+        
+        return view('guest.posyandu-show', compact('posyandu'));
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
+    {
+        // Data dummy untuk demo
+        $balita = [
+            'id' => $id,
+            'nama_balita' => 'Ahmad Susanto',
+            'usia' => '2 tahun 3 bulan',
+            'nama_ibu' => 'Siti Rahayu',
+            'alamat' => 'Jl. Merdeka No. 123',
+            'tanggal_periksa' => '2024-01-15'
+        ];
+
+        return view('posyandu.edit', compact('balita'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
+    {
+        // Validasi data
+        $request->validate([
+            'nama_balita' => 'required|string|max:255',
+            'usia' => 'required|string',
+            'nama_ibu' => 'required|string|max:255',
+            'alamat' => 'required|string',
+            'tanggal_periksa' => 'required|date'
+        ]);
+
+        // Dalam real application, update ke database
+        return redirect()->route('posyandu.index')
+                        ->with('success', 'Data balita berhasil diperbarui!');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
+    {
+        // Dalam real application, hapus dari database
+        return redirect()->route('posyandu.index')
+                        ->with('success', 'Data balita berhasil dihapus!');
     }
 }
