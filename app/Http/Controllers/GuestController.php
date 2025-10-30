@@ -10,12 +10,12 @@ class GuestController extends Controller
     {
         return view('guest.tentang');
     }
-    
+
     public function kontak()
     {
         return view('guest.kontak');
     }
-    
+
     public function kirimPesan(Request $request)
     {
         $validated = $request->validate([
@@ -24,13 +24,13 @@ class GuestController extends Controller
             'subjek' => 'required|string|max:255',
             'pesan' => 'required|string',
         ]);
-        
+
         // Logic untuk mengirim email atau menyimpan pesan
         // ...
-        
+
         return back()->with('success', 'Pesan berhasil dikirim!');
     }
-    
+
     public function faq()
     {
         $faqs = [
@@ -40,10 +40,10 @@ class GuestController extends Controller
             ],
             // ... tambahkan FAQ lainnya
         ];
-        
+
         return view('guest.faq', compact('faqs'));
     }
-    
+
     public function bantuan()
     {
         return view('guest.bantuan');

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,14 +18,14 @@
             --gray: #718096;
             --white: #ffffff;
         }
-        
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Inter', sans-serif;
         }
-        
+
         body {
             background-color: var(--light);
             color: var(--dark);
@@ -33,58 +34,58 @@
             display: flex;
             flex-direction: column;
         }
-        
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
         }
-        
+
         /* Header Styles */
         header {
             background-color: var(--white);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             position: sticky;
             top: 0;
             z-index: 100;
         }
-        
+
         .header-top {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 1rem 0;
         }
-        
+
         .logo {
             display: flex;
             align-items: center;
             gap: 10px;
             text-decoration: none;
         }
-        
+
         .logo i {
             font-size: 2rem;
             color: var(--primary);
         }
-        
+
         .logo h1 {
             font-size: 1.8rem;
             color: var(--primary);
             font-weight: 700;
         }
-        
+
         .logo span {
             color: var(--secondary);
         }
-        
+
         nav ul {
             display: flex;
             list-style: none;
             align-items: center;
             gap: 20px;
         }
-        
+
         nav ul li a {
             color: var(--dark);
             text-decoration: none;
@@ -93,18 +94,19 @@
             border-radius: 20px;
             transition: all 0.3s;
         }
-        
-        nav ul li a:hover, nav ul li a.active {
+
+        nav ul li a:hover,
+        nav ul li a.active {
             background-color: var(--primary-light);
             color: var(--primary);
         }
-        
+
         .auth-buttons {
             display: flex;
             gap: 10px;
             align-items: center;
         }
-        
+
         .btn-login {
             background-color: transparent;
             color: var(--primary);
@@ -117,11 +119,11 @@
             text-decoration: none;
             display: inline-block;
         }
-        
+
         .btn-login:hover {
             background-color: var(--primary-light);
         }
-        
+
         .btn-register {
             background-color: var(--primary);
             color: var(--white);
@@ -134,11 +136,11 @@
             text-decoration: none;
             display: inline-block;
         }
-        
+
         .btn-register:hover {
             background-color: #236a9e;
         }
-        
+
         /* User Menu Styles */
         .user-menu {
             position: relative;
@@ -146,12 +148,12 @@
             align-items: center;
             gap: 10px;
         }
-        
+
         .user-greeting {
             color: var(--primary);
             font-weight: 500;
         }
-        
+
         .logout-btn {
             background: var(--accent);
             color: white;
@@ -165,16 +167,16 @@
             align-items: center;
             gap: 5px;
         }
-        
+
         .logout-btn:hover {
             background: #e55a5a;
             transform: translateY(-1px);
         }
-        
+
         .user-dropdown {
             position: relative;
         }
-        
+
         /* Main Content */
         main {
             flex: 1;
@@ -193,7 +195,7 @@
             background: var(--white);
             border-radius: 15px;
             padding: 2rem;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
@@ -201,7 +203,7 @@
 
         .service-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
         }
 
         .service-card.popular {
@@ -330,37 +332,37 @@
             padding: 3rem 0 1rem;
             margin-top: auto;
         }
-        
+
         .footer-content {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 40px;
             margin-bottom: 2rem;
         }
-        
+
         .footer-section h3 {
             margin-bottom: 1rem;
             color: var(--white);
         }
-        
+
         .footer-section ul {
             list-style: none;
         }
-        
+
         .footer-section ul li {
             margin-bottom: 0.5rem;
         }
-        
+
         .footer-section ul li a {
             color: #cbd5e0;
             text-decoration: none;
             transition: color 0.3s;
         }
-        
+
         .footer-section ul li a:hover {
             color: var(--white);
         }
-        
+
         .footer-bottom {
             text-align: center;
             padding-top: 2rem;
@@ -375,16 +377,16 @@
                 gap: 15px;
                 text-align: center;
             }
-            
+
             nav ul {
                 flex-wrap: wrap;
                 justify-content: center;
             }
-            
+
             .auth-buttons {
                 justify-content: center;
             }
-            
+
             .user-menu {
                 flex-direction: column;
                 gap: 5px;
@@ -401,10 +403,113 @@
             .service-card {
                 padding: 1.5rem;
             }
+
+            /* Floating WhatsApp Button */
+            .whatsapp-float {
+                position: fixed;
+                bottom: 25px;
+                right: 25px;
+                z-index: 1000;
+            }
+
+            .whatsapp-link {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 60px;
+                height: 60px;
+                background: #25D366;
+                color: white;
+                border-radius: 50%;
+                text-decoration: none;
+                box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+                transition: all 0.3s ease;
+                animation: pulse 2s infinite;
+                position: relative;
+            }
+
+            .whatsapp-link:hover {
+                transform: scale(1.1);
+                box-shadow: 0 6px 25px rgba(37, 211, 102, 0.6);
+                color: white;
+            }
+
+            .whatsapp-link i {
+                font-size: 28px;
+            }
+
+            /* Pulse Animation */
+            @keyframes pulse {
+                0% {
+                    box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7);
+                }
+
+                70% {
+                    box-shadow: 0 0 0 15px rgba(37, 211, 102, 0);
+                }
+
+                100% {
+                    box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+                }
+            }
+
+            /* Tooltip */
+            .whatsapp-link::before {
+                content: "Chat dengan Kami";
+                position: absolute;
+                bottom: 70px;
+                right: 0;
+                background: #333;
+                color: white;
+                padding: 8px 12px;
+                border-radius: 6px;
+                font-size: 12px;
+                white-space: nowrap;
+                opacity: 0;
+                transform: translateY(10px);
+                transition: all 0.3s ease;
+                pointer-events: none;
+            }
+
+            .whatsapp-link::after {
+                content: "";
+                position: absolute;
+                bottom: 60px;
+                right: 25px;
+                border: 5px solid transparent;
+                border-top-color: #333;
+                opacity: 0;
+                transform: translateY(10px);
+                transition: all 0.3s ease;
+            }
+
+            .whatsapp-link:hover::before,
+            .whatsapp-link:hover::after {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            /* Responsive Design */
+            @media (max-width: 768px) {
+                .whatsapp-float {
+                    bottom: 20px;
+                    right: 20px;
+                }
+
+                .whatsapp-link {
+                    width: 55px;
+                    height: 55px;
+                }
+
+                .whatsapp-link i {
+                    font-size: 24px;
+                }
+            }
         }
     </style>
     @stack('styles')
 </head>
+
 <body>
     <!-- Header -->
     <header>
@@ -414,19 +519,24 @@
                     <i class="fas fa-heartbeat"></i>
                     <h1>POSYANDU<span>SEHAT</span></h1>
                 </a>
-                
+
                 <nav>
                     <ul>
-                        <li><a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'active' : '' }}">Beranda</a></li>
-                        <li><a href="{{ route('layanan') }}" class="{{ request()->routeIs('layanan*') ? 'active' : '' }}">Layanan</a></li>
-                        <li><a href="{{ route('posyandu') }}" class="{{ request()->routeIs('posyandu') ? 'active' : '' }}">Posyandu</a></li>
-                        <li><a href="{{ route('artikel') }}" class="{{ request()->routeIs('artikel*') ? 'active' : '' }}">Artikel</a></li>
-                        <li><a href="{{ route('tentang') }}" class="{{ request()->routeIs('tentang') ? 'active' : '' }}">Tentang</a></li>
+                        <li><a href="{{ route('home') }}"
+                                class="{{ request()->routeIs('home') ? 'active' : '' }}">Beranda</a></li>
+                        <li><a href="{{ route('layanan') }}"
+                                class="{{ request()->routeIs('layanan*') ? 'active' : '' }}">Layanan</a></li>
+                        <li><a href="{{ route('posyandu.index') }}"
+                                class="{{ request()->routeIs('posyandu*') ? 'active' : '' }}">Posyandu</a></li>
+                        <li><a href="{{ route('artikel') }}"
+                                class="{{ request()->routeIs('artikel*') ? 'active' : '' }}">Artikel</a></li>
+                        <li><a href="{{ route('artikel') }}"
+                                class="{{ request()->routeIs('tentang') ? 'active' : '' }}">Tentang</a></li>
                     </ul>
                 </nav>
-                
+
                 <div class="auth-buttons">
-                    @if(session('logged_in'))
+                    @if (session('logged_in'))
                         <div class="user-menu">
                             <span class="user-greeting">Halo, {{ session('user')['name'] }}</span>
                             <div class="user-dropdown">
@@ -451,13 +561,13 @@
     <main>
         <div class="container">
             <!-- Alert Messages -->
-            @if(session('error'))
+            @if (session('error'))
                 <div class="alert alert-error">
                     <i class="fas fa-exclamation-circle"></i> {{ session('error') }}
                 </div>
             @endif
 
-            @if(session('success'))
+            @if (session('success'))
                 <div class="alert alert-success">
                     <i class="fas fa-check-circle"></i> {{ session('success') }}
                 </div>
@@ -473,9 +583,10 @@
             <div class="footer-content">
                 <div class="footer-section">
                     <h3>POSYANDU SEHAT</h3>
-                    <p>Sistem Informasi Posyandu Terpadu untuk mendukung kesehatan ibu dan anak melalui pelayanan yang terintegrasi dan modern.</p>
+                    <p>Sistem Informasi Posyandu Terpadu untuk mendukung kesehatan ibu dan anak melalui pelayanan yang
+                        terintegrasi dan modern.</p>
                 </div>
-                
+
                 <div class="footer-section">
                     <h3>Layanan</h3>
                     <ul>
@@ -485,18 +596,17 @@
                         <li><a href="{{ route('layanan') }}">Pemantauan Gizi</a></li>
                     </ul>
                 </div>
-                
+
                 <div class="footer-section">
                     <h3>Link Cepat</h3>
                     <ul>
                         <li><a href="{{ route('home') }}">Beranda</a></li>
-                        <li><a href="{{ route('posyandu') }}">Daftar Posyandu</a></li>
+                        <li><a href="{{ route('posyandu.index') }}">Daftar Posyandu</a></li>
                         <li><a href="{{ route('artikel') }}">Artikel Kesehatan</a></li>
-                        <li><a href="{{ route('tentang') }}">Tentang Kami</a></li>
                         <li><a href="{{ route('kontak') }}">Kontak</a></li>
                     </ul>
                 </div>
-                
+
                 <div class="footer-section">
                     <h3>Kontak</h3>
                     <ul>
@@ -506,7 +616,7 @@
                     </ul>
                 </div>
             </div>
-            
+
             <div class="footer-bottom">
                 <p>&copy; 2024 POSYANDU SEHAT. Semua hak dilindungi.</p>
             </div>
@@ -514,5 +624,18 @@
     </footer>
 
     @stack('scripts')
+    <!-- Floating WhatsApp Button -->
+    <div class="whatsapp-float">
+        <a href="https://wa.me/6281234567890?text=Halo%20POSYANDU%20SEHAT%2C%20saya%20ingin%20bertanya%20tentang%20layanan%20kesehatan%20ibu%20dan%20anak."
+            target="_blank" class="whatsapp-link">
+            <i class="fab fa-whatsapp"></i>
+        </a>
+    </div>
+
+    @stack('scripts')
 </body>
+
+</html>
+</body>
+
 </html>

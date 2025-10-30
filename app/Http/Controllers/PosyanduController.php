@@ -8,23 +8,17 @@ use Illuminate\Support\Facades\Storage;
 
 class PosyanduController extends Controller
 {
-    // Menampilkan semua posyandu
     public function index()
     {
-        // Gunakan query sederhana dulu
-        $posyandus = Posyandu::where('status', 'active')
-                           ->orderBy('created_at', 'desc')
-                           ->get();
-        
+        $posyandus = Posyandu::where('status', 'active')->orderBy('created_at', 'desc')->get();
         return view('posyandu.index', compact('posyandus'));
     }
-    // Menampilkan form tambah posyandu
+
     public function create()
     {
         return view('posyandu.create');
     }
 
-    // Menyimpan posyandu baru
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -46,7 +40,6 @@ class PosyanduController extends Controller
             'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        // Upload gambar jika ada
         if ($request->hasFile('gambar')) {
             $validated['gambar'] = $request->file('gambar')->store('posyandu', 'public');
         }
@@ -56,21 +49,18 @@ class PosyanduController extends Controller
         return redirect()->route('posyandu.index')->with('success', 'Posyandu berhasil ditambahkan!');
     }
 
-    // Menampilkan detail posyandu
     public function show($id)
     {
         $posyandu = Posyandu::findOrFail($id);
         return view('posyandu.show', compact('posyandu'));
     }
 
-    // Menampilkan form edit posyandu
     public function edit($id)
     {
         $posyandu = Posyandu::findOrFail($id);
         return view('posyandu.edit', compact('posyandu'));
     }
 
-    // Update posyandu
     public function update(Request $request, $id)
     {
         $posyandu = Posyandu::findOrFail($id);
@@ -95,9 +85,7 @@ class PosyanduController extends Controller
             'status' => 'required|in:active,inactive',
         ]);
 
-        // Upload gambar baru jika ada
         if ($request->hasFile('gambar')) {
-            // Hapus gambar lama jika ada
             if ($posyandu->gambar) {
                 Storage::disk('public')->delete($posyandu->gambar);
             }
@@ -109,12 +97,10 @@ class PosyanduController extends Controller
         return redirect()->route('posyandu.index')->with('success', 'Posyandu berhasil diperbarui!');
     }
 
-    // Hapus posyandu
     public function destroy($id)
     {
         $posyandu = Posyandu::findOrFail($id);
 
-        // Hapus gambar jika ada
         if ($posyandu->gambar) {
             Storage::disk('public')->delete($posyandu->gambar);
         }
