@@ -4,66 +4,67 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 
 class AuthController extends Controller
 {
+    // Show Login Form
     public function showLoginForm()
     {
-        return view('auth.login');
+        return view('pages.auth.login');
     }
-    
+
+    // Handle Login
     public function login(Request $request)
     {
-        // Validasi input
-        $request->validate([
+        $credentials = $request->validate([
             'email' => 'required|email',
-            'password' => 'required|min:6'
+            'password' => 'required'
         ]);
-        
-        // Coba login
-        $credentials = $request->only('email', 'password');
-        $remember = $request->has('remember');
-        
-        if (Auth::attempt($credentials, $remember)) {
+
+        if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->intended('/');
+            return redirect()->intended('/')->with('success', 'Login berhasil!');
         }
-        
+
         return back()->withErrors([
-            'email' => 'Email atau password yang Anda masukkan salah.',
-        ])->withInput($request->only('email', 'remember'));
+            'email' => 'Email atau password salah.',
+        ])->onlyInput('email');
     }
-    
+
+    // Show Register Form
+    public function showRegisterForm()
+    {
+        return view('pages.auth.register');
+    }
+
+    // Handle Register
+    public function register(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|min:6|confirmed',
+        ]);
+
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
+
+        Auth::login($user);
+
+        return redirect('/')->with('success', 'Registrasi berhasil! Selamat datang di MEDILAB.');
+    }
+
+    // Handle Logout
     public function logout(Request $request)
     {
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect('/');
-    }
-    
-    public function showRegistrationForm()
-    {
-        return view('auth.register');
-    }
-    
-    public function register(Request $request)
-    {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|min:8|confirmed',
-        ]);
-        
-        $user = User::create([
-            'name' => $validated['name'],
-            'email' => $validated['email'],
-            'password' => bcrypt($validated['password']),
-        ]);
-        
-        Auth::login($user);
-        
-        return redirect('/')->with('success', 'Registrasi berhasil! Selamat datang di POSYANDU SEHAT.');
+        return redirect('/')->with('success', 'Logout berhasil!');
     }
 }
