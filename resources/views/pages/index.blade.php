@@ -480,5 +480,16 @@
     </div>
   </section>
 
+  <!-- Floating WhatsApp Button -->
+  <a href="https://wa.me/6281234567890?text=Halo%20MEDILAB,%20saya%20ingin%20bertanya%20tentang%20layanan%20posyandu" 
+     class="whatsapp-float" 
+     target="_blank"
+     data-aos="fade-left" 
+     data-aos-delay="500"
+     data-aos-anchor="#hero">
+      <i class="fab fa-whatsapp"></i>
+  </a>
+  <div class="whatsapp-tooltip">Hubungi Kami via WhatsApp</div>
+
 </main>
 @endsection
