@@ -1,4 +1,5 @@
 <?php
+// app/Models/Warga.php
 
 namespace App\Models;
 
@@ -9,26 +10,19 @@ class Warga extends Model
 {
     use HasFactory;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
+    // Pastikan nama tabel sesuai
+    protected $table = 'wargas';
+
     protected $fillable = [
         'nama',
         'nik',
         'usia',
-        'jenis_kelamin',
+        'jenis_kelamin', 
         'alamat',
-        'posyandu_id',
+        'posyandu_id', // Pastikan ini ada
         'status',
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
     protected $casts = [
         'usia' => 'integer',
     ];
@@ -38,6 +32,6 @@ class Warga extends Model
      */
     public function posyandu()
     {
-        return $this->belongsTo(Posyandu::class);
+        return $this->belongsTo(Posyandu::class, 'posyandu_id');
     }
 }

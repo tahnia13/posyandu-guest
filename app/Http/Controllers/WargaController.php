@@ -33,7 +33,7 @@ class WargaController extends Controller
             'usia' => 'required|integer|min:0|max:120',
             'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
             'alamat' => 'required|string',
-            'posyandu_id' => 'nullable|exists:posyandus,id',
+            'posyandu_id' => 'required|exists:posyandus,id',
             'status' => 'required|in:aktif,tidak_aktif'
         ]);
 

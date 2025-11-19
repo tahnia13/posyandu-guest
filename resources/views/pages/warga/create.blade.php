@@ -1,3 +1,4 @@
+{{-- resources/views/warga/create.blade.php --}}
 @extends('layouts.app')
 
 @section('content')
@@ -88,26 +89,36 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="posyandu_id" class="form-label">Posyandu</label>
+                            <label for="posyandu_id" class="form-label">Posyandu <span class="text-danger">*</span></label>
                             <select class="form-select @error('posyandu_id') is-invalid @enderror" 
-                                    id="posyandu_id" name="posyandu_id">
-                                <option value="">Pilih Posyandu (Opsional)</option>
+                                    id="posyandu_id" name="posyandu_id" required>
+                                <option value="">Pilih Posyandu</option>
                                 @foreach($posyandus as $posyandu)
                                     <option value="{{ $posyandu->id }}" {{ old('posyandu_id') == $posyandu->id ? 'selected' : '' }}>
-                                        {{ $posyandu->nama }}
+                                        {{ $posyandu->nama }} - {{ $posyandu->alamat }}
                                     </option>
                                 @endforeach
                             </select>
                             @error('posyandu_id')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
+                            
+                            @if($posyandus->isEmpty())
+                                <div class="alert alert-warning mt-2">
+                                    <small>
+                                        <i class="fas fa-exclamation-triangle me-1"></i>
+                                        Belum ada data posyandu. 
+                                        <a href="{{ route('posyandu.create') }}" class="alert-link">Tambah posyandu terlebih dahulu</a>.
+                                    </small>
+                                </div>
+                            @endif
                         </div>
 
                         <div class="d-flex justify-content-between">
                             <a href="{{ route('warga.index') }}" class="btn btn-secondary">
                                 <i class="fas fa-arrow-left me-2"></i>Kembali
                             </a>
-                            <button type="submit" class="btn btn-primary">
+                            <button type="submit" class="btn btn-primary" {{ $posyandus->isEmpty() ? 'disabled' : '' }}>
                                 <i class="fas fa-save me-2"></i>Simpan Data
                             </button>
                         </div>
