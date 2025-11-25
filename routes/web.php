@@ -6,8 +6,8 @@ use App\Http\Controllers\WargaController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 
-// Public Routes
-Route::get('/', [PosyanduController::class, 'index'])->name('posyandu.index');
+// Public Routes - Pagination harus menggunakan route home
+Route::get('/', [PosyanduController::class, 'index'])->name('home');
 
 // Auth Routes
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
@@ -24,6 +24,14 @@ Route::middleware('auth')->group(function () {
 
 // Protected Routes - Hanya untuk user yang login
 Route::middleware('auth')->group(function () {
-    Route::resource('posyandu', PosyanduController::class)->except(['index']);
+    // Posyandu CRUD (SEMPURNA)
+    Route::get('/posyandu', [PosyanduController::class, 'index'])->name('posyandu.index'); // <- TAMBAH INI
+    Route::get('/posyandu/create', [PosyanduController::class, 'create'])->name('posyandu.create');
+    Route::post('/posyandu', [PosyanduController::class, 'store'])->name('posyandu.store');
+    Route::get('/posyandu/{posyandu}/edit', [PosyanduController::class, 'edit'])->name('posyandu.edit');
+    Route::put('/posyandu/{posyandu}', [PosyanduController::class, 'update'])->name('posyandu.update');
+    Route::delete('/posyandu/{posyandu}', [PosyanduController::class, 'destroy'])->name('posyandu.destroy');
+    
+    // Warga CRUD
     Route::resource('warga', WargaController::class);
 });

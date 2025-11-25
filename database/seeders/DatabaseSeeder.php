@@ -9,9 +9,10 @@ class DatabaseSeeder extends Seeder
 {
     public function run()
     {
-        $this->call([
-            PosyanduSeeder::class, // 10 data posyandu
-            WargaSeeder::class,    // 10 data warga
-        ]);
+        // Buat 100 data posyandu
+        $this->call(PosyanduSeeder::class);
+        
+        // Buat 100 data warga  
+        $this->call(WargaSeeder::class);
     }
 }

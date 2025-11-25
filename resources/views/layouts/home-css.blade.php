@@ -1,4 +1,53 @@
 <style>
+
+    /* Custom CSS untuk search dan filter */
+.bg-pink {
+    background-color: #e83e8c !important;
+}
+
+/* Hover effect untuk card */
+.card:hover {
+    transform: translateY(-2px);
+    transition: transform 0.2s ease-in-out;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1) !important;
+}
+
+/* Style untuk search input */
+.search-highlight {
+    background-color: #fff3cd;
+    padding: 2px 4px;
+    border-radius: 3px;
+}
+
+/* Responsive design untuk filter */
+@media (max-width: 768px) {
+    .filter-card .col-md-4,
+    .filter-card .col-md-3 {
+        margin-bottom: 1rem;
+    }
+}
+    /* Custom CSS untuk filter */
+.bg-pink {
+    background-color: #e83e8c !important;
+}
+
+.card.bg-primary .card-title,
+.card.bg-success .card-title,
+.card.bg-info .card-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+/* Hover effect untuk card */
+.card:hover {
+    transform: translateY(-2px);
+    transition: transform 0.2s ease-in-out;
+}
+
+/* Style untuk filter form */
+.filter-card {
+    border-left: 4px solid #007bff;
+}
 /* Hero Section Styling */
 .hero .welcome h2 {
     font-size: 3rem;

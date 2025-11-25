@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 class WargaFactory extends Factory
 {
-    private static $nikCounter = 3201010101010001; // Counter untuk NIK unik
+    private static $nikCounter = 3201010101010001;
 
     public function definition()
     {
@@ -16,7 +16,7 @@ class WargaFactory extends Factory
         
         return [
             'nama' => $this->faker->name($jenisKelamin === 'Laki-laki' ? 'male' : 'female'),
-            'nik' => (string) self::$nikCounter++, // NIK unik incremental
+            'nik' => (string) self::$nikCounter++,
             'usia' => $this->faker->numberBetween(1, 80),
             'jenis_kelamin' => $jenisKelamin,
             'alamat' => $this->faker->address(),

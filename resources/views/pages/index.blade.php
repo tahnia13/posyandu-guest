@@ -229,189 +229,479 @@
   </section>
 
   <!-- Posyandu Section -->
-  <section id="posyandu" class="posyandu section light-background">
+<section id="posyandu" class="posyandu section light-background">
     <div class="container section-title" data-aos="fade-up">
-      <h2>Daftar Posyandu</h2>
-      <p>Kelola data posyandu di wilayah Anda</p>
+        <h2>Daftar Posyandu</h2>
+        <p>Kelola data posyandu di wilayah Anda</p>
     </div>
 
     <div class="container" data-aos="fade-up" data-aos-delay="100">
-      <!-- Tombol Tambah -->
-      <div class="d-flex justify-content-end mb-4">
-        <a href="{{ route('posyandu.create') }}" class="btn btn-primary">
-          <i class="fas fa-plus"></i> Tambah Posyandu
-        </a>
-      </div>
-
-      <!-- Card List Posyandu -->
-      <div class="row gy-4">
-        @foreach ($posyandus as $posyandu)
-        <div class="col-lg-4 col-md-6">
-          <div class="card shadow-sm h-100">
-            <div class="card-body d-flex flex-column">
-              <div class="card-header bg-transparent border-0 px-0 pt-0">
-                <h5 class="card-title mb-0">{{ $posyandu->nama }}</h5>
-              </div>
-              
-              <div class="card-content flex-grow-1">
-                <p class="card-text">
-                  <strong><i class="fas fa-map-marker-alt me-2"></i>Alamat:</strong><br>
-                  {{ $posyandu->alamat }}
-                </p>
-                <p class="card-text">
-                  <strong><i class="fas fa-clock me-2"></i>Jadwal:</strong><br>
-                  {{ $posyandu->jadwal }}
-                </p>
-              </div>
-
-              <div class="card-footer bg-transparent border-0 px-0 pb-0">
-                <div class="d-flex justify-content-between">
-                  <a href="{{ route('posyandu.edit', $posyandu->id) }}" class="btn btn-warning btn-sm">
-                    <i class="fas fa-edit"></i> Edit
-                  </a>
-                  <form action="{{ route('posyandu.destroy', $posyandu->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus data ini?')">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-danger btn-sm">
-                      <i class="fas fa-trash"></i> Hapus
-                    </button>
-                  </form>
-                </div>
-              </div>
+        <!-- Search Bar untuk Posyandu -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <form method="GET" action="{{ url('/') }}#posyandu" class="row g-3 align-items-end">
+                    <div class="col-md-8">
+                        <label for="search_posyandu" class="form-label">
+                            <i class="fas fa-search me-2"></i>Cari Posyandu
+                        </label>
+                        <div class="input-group">
+                            <input type="text" 
+                                   name="search_posyandu" 
+                                   id="search_posyandu"
+                                   class="form-control" 
+                                   placeholder="Cari berdasarkan nama, alamat, atau jadwal posyandu..."
+                                   value="{{ request('search_posyandu') }}">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        @if(request('search_posyandu'))
+                            <a href="{{ url('/') }}#posyandu" class="btn btn-outline-secondary">
+                                <i class="fas fa-times me-2"></i>Clear Search
+                            </a>
+                        @endif
+                    </div>
+                </form>
             </div>
-          </div>
         </div>
-        @endforeach
-      </div>
 
-      <!-- Jika tidak ada data -->
-      @if($posyandus->isEmpty())
-        <div class="alert alert-info text-center mt-4">
-          <i class="fas fa-clinic-medical me-2"></i>
-          Belum ada data posyandu yang terdaftar.
+        <!-- Header dengan Tombol Tambah -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                @if(request('search_posyandu'))
+                    <div class="alert alert-info py-2 mb-0">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Menampilkan hasil pencarian untuk: <strong>"{{ request('search_posyandu') }}"</strong>
+                        <span class="badge bg-primary ms-2">{{ $posyandus->total() }} hasil</span>
+                    </div>
+                @else
+                    <div class="alert alert-light py-2 mb-0">
+                        <i class="fas fa-clinic-medical me-2"></i>
+                        Total <strong>{{ $posyandus->total() }}</strong> posyandu terdaftar
+                    </div>
+                @endif
+            </div>
+            <a href="{{ route('posyandu.create') }}" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Tambah Posyandu
+            </a>
         </div>
-      @endif
+
+        <!-- Card List Posyandu -->
+        <div class="row gy-4">
+            @foreach ($posyandus as $posyandu)
+            <div class="col-lg-4 col-md-6">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body d-flex flex-column">
+                        <div class="card-header bg-transparent border-0 px-0 pt-0">
+                            <h5 class="card-title mb-0">{{ $posyandu->nama }}</h5>
+                        </div>
+                        
+                        <div class="card-content flex-grow-1">
+                            <p class="card-text">
+                                <strong><i class="fas fa-map-marker-alt me-2"></i>Alamat:</strong><br>
+                                {{ $posyandu->alamat }}
+                            </p>
+                            <p class="card-text">
+                                <strong><i class="fas fa-clock me-2"></i>Jadwal:</strong><br>
+                                <span class="badge bg-info">{{ $posyandu->jadwal }}</span>
+                            </p>
+                        </div>
+
+                        <div class="card-footer bg-transparent border-0 px-0 pb-0">
+                            <div class="d-flex justify-content-between">
+                                <a href="{{ route('posyandu.edit', $posyandu->id) }}" class="btn btn-warning btn-sm">
+                                    <i class="fas fa-edit"></i> Edit
+                                </a>
+                                <form action="{{ route('posyandu.destroy', $posyandu->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus data ini?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm">
+                                        <i class="fas fa-trash"></i> Hapus
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @endforeach
+        </div>
+
+        <!-- Jika tidak ada data -->
+        @if($posyandus->isEmpty())
+            <div class="text-center mt-5">
+                <div class="empty-state">
+                    <i class="fas fa-clinic-medical fa-3x text-muted mb-3"></i>
+                    <h5 class="text-muted">
+                        @if(request('search_posyandu'))
+                            Tidak ditemukan posyandu dengan kata kunci "{{ request('search_posyandu') }}"
+                        @else
+                            Belum ada data posyandu yang terdaftar
+                        @endif
+                    </h5>
+                    @if(request('search_posyandu'))
+                        <a href="{{ url('/') }}#posyandu" class="btn btn-primary mt-2">
+                            <i class="fas fa-refresh me-2"></i>Tampilkan Semua Posyandu
+                        </a>
+                    @else
+                        <a href="{{ route('posyandu.create') }}" class="btn btn-primary mt-2">
+                            <i class="fas fa-plus me-2"></i>Tambah Posyandu Pertama
+                        </a>
+                    @endif
+                </div>
+            </div>
+        @endif
+
+        <!-- Pagination untuk Posyandu -->
+        @if($posyandus->hasPages())
+            <div class="d-flex justify-content-between align-items-center mt-4">
+                <div>
+                    <p class="mb-0 text-muted">
+                        Menampilkan {{ $posyandus->firstItem() }} sampai {{ $posyandus->lastItem() }} 
+                        dari {{ $posyandus->total() }} posyandu
+                        
+                        @if(request('search_posyandu'))
+                            <span class="badge bg-info ms-2">
+                                Pencarian: "{{ request('search_posyandu') }}"
+                            </span>
+                        @endif
+                    </p>
+                </div>
+                <div>
+                    <nav>
+                        <ul class="pagination pagination-sm mb-0">
+                            {{-- Previous Page Link --}}
+                            @if ($posyandus->onFirstPage())
+                                <li class="page-item disabled">
+                                    <span class="page-link">&laquo;</span>
+                                </li>
+                            @else
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ $posyandus->previousPageUrl() }}#posyandu">&laquo;</a>
+                                </li>
+                            @endif
+
+                            {{-- Pagination Elements --}}
+                            @php
+                                $current = $posyandus->currentPage();
+                                $last = $posyandus->lastPage();
+                                $start = max(1, $current - 2);
+                                $end = min($last, $current + 2);
+                            @endphp
+
+                            {{-- Page Number Links --}}
+                            @for ($i = $start; $i <= $end; $i++)
+                                <li class="page-item {{ $i == $current ? 'active' : '' }}">
+                                    <a class="page-link" href="{{ $posyandus->url($i) }}#posyandu">{{ $i }}</a>
+                                </li>
+                            @endfor
+
+                            {{-- Next Page Link --}}
+                            @if ($posyandus->hasMorePages())
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ $posyandus->nextPageUrl() }}#posyandu">&raquo;</a>
+                                </li>
+                            @else
+                                <li class="page-item disabled">
+                                    <span class="page-link">&raquo;</span>
+                                </li>
+                            @endif
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        @endif
     </div>
-  </section>
+</section>
 
   <!-- Warga Section -->
-  <section id="warga" class="warga section">
+<section id="warga" class="warga section">
     <div class="container section-title" data-aos="fade-up">
-      <h2>Data Warga</h2>
-      <p>Data warga yang terdaftar untuk layanan kesehatan</p>
+        <h2>Data Warga</h2>
+        <p>Data warga yang terdaftar untuk layanan kesehatan</p>
     </div>
 
     <div class="container" data-aos="fade-up" data-aos-delay="100">
-      <!-- Header dengan Informasi -->
-      <div class="d-flex justify-content-between align-items-center mb-4">
-        <div class="alert alert-info mb-0 flex-grow-1 me-3">
-          <p class="mb-0"><small>Informasi warga bersifat internal dan digunakan untuk pelayanan medis dan pemantauan kesehatan masyarakat.</small></p>
-        </div>
-        <a href="{{ route('warga.create') }}" class="btn btn-primary">
-          <i class="fas fa-plus"></i> Tambah Warga
-        </a>
-      </div>
+        <!-- Search dan Filter Section -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <i class="fas fa-search me-2"></i>Pencarian & Filter Data Warga
+                </h5>
+                <form method="GET" action="{{ url('/') }}#warga" class="row g-3 align-items-end">
+                    <!-- Search Warga -->
+                    <div class="col-md-5">
+                        <label for="search_warga" class="form-label">Cari Warga</label>
+                        <div class="input-group">
+                            <input type="text" 
+                                   name="search_warga" 
+                                   id="search_warga"
+                                   class="form-control" 
+                                   placeholder="Cari berdasarkan nama, NIK, alamat, atau jenis kelamin..."
+                                   value="{{ request('search_warga') }}">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
 
-      <!-- Card List Warga -->
-      <div class="row gy-4">
-        @foreach ($wargas as $warga)
-        <div class="col-lg-4 col-md-6">
-          <div class="card shadow-sm h-100">
-            <div class="card-body d-flex flex-column">
-              <!-- Header Card -->
-              <div class="card-header bg-transparent border-0 px-0 pt-0 d-flex justify-content-between align-items-start">
-                <h5 class="card-title mb-0">{{ $warga->nama }}</h5>
-                <span class="badge {{ $warga->status == 'aktif' ? 'bg-success' : 'bg-warning' }}">
-                  {{ ucfirst($warga->status) }}
-                </span>
-              </div>
+                    <!-- Filter Jenis Kelamin -->
+                    <div class="col-md-3">
+                        <label for="jenis_kelamin" class="form-label">Jenis Kelamin</label>
+                        <select name="jenis_kelamin" id="jenis_kelamin" class="form-select">
+                            <option value="">Semua</option>
+                            <option value="Laki-laki" {{ request('jenis_kelamin') == 'Laki-laki' ? 'selected' : '' }}>Laki-laki</option>
+                            <option value="Perempuan" {{ request('jenis_kelamin') == 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
+                        </select>
+                    </div>
 
-              <!-- Content Card -->
-              <div class="card-content flex-grow-1">
-                <div class="warga-info">
-                  <p class="card-text mb-2">
-                    <small class="text-muted">
-                      <i class="fas fa-id-card me-2"></i><strong>NIK:</strong> {{ $warga->nik }}
-                    </small>
-                  </p>
-                  <p class="card-text mb-2">
-                    <small class="text-muted">
-                      <i class="fas fa-user me-2"></i><strong>Usia:</strong> {{ $warga->usia }} tahun
-                    </small>
-                  </p>
-                  <p class="card-text mb-2">
-                    <small class="text-muted">
-                      <i class="fas fa-venus-mars me-2"></i><strong>JK:</strong> 
-                      <span class="badge bg-info">{{ $warga->jenis_kelamin }}</span>
-                    </small>
-                  </p>
-                  <p class="card-text mb-2">
-                    <small class="text-muted">
-                      <i class="fas fa-map-marker-alt me-2"></i><strong>Alamat:</strong><br>
-                      <span class="ms-3">{{ Str::limit($warga->alamat, 60) }}</span>
-                    </small>
-                  </p>
-                  <p class="card-text">
-                    <small class="text-muted">
-                      <i class="fas fa-clinic-medical me-2"></i><strong>Posyandu:</strong><br>
-                      @if($warga->posyandu)
-                        <span class="badge bg-primary ms-3">{{ $warga->posyandu->nama }}</span>
-                      @else
-                        <span class="badge bg-secondary ms-3">Belum Terdaftar</span>
-                      @endif
-                    </small>
-                  </p>
-                </div>
-              </div>
+                    <!-- Tombol Action -->
+                    <div class="col-md-4">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-filter me-2"></i>Terapkan
+                        </button>
+                        <a href="{{ url('/') }}#warga" class="btn btn-outline-secondary">
+                            <i class="fas fa-refresh me-2"></i>Reset
+                        </a>
+                    </div>
 
-              <!-- Footer Card dengan Action Buttons -->
-              <div class="card-footer bg-transparent border-0 px-0 pb-0">
-                <div class="d-flex justify-content-between gap-2">
-                  <a href="{{ route('warga.show', $warga->id) }}" class="btn btn-info btn-sm flex-fill">
-                    <i class="fas fa-eye"></i>
-                  </a>
-                  <a href="{{ route('warga.edit', $warga->id) }}" class="btn btn-warning btn-sm flex-fill">
-                    <i class="fas fa-edit"></i>
-                  </a>
-                  <form action="{{ route('warga.destroy', $warga->id) }}" method="POST" 
-                        onsubmit="return confirm('Yakin ingin menghapus data warga ini?')"
-                        class="flex-fill">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-danger btn-sm w-100">
-                      <i class="fas fa-trash"></i>
-                    </button>
-                  </form>
-                </div>
-              </div>
+                    <!-- Info Filter Aktif -->
+                    <div class="col-12">
+                        @if(request('search_warga') || request('jenis_kelamin'))
+                            <div class="alert alert-info py-2 mt-2 mb-0">
+                                <small>
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    Filter aktif: 
+                                    @if(request('search_warga'))
+                                        <span class="badge bg-primary me-2">Pencarian: "{{ request('search_warga') }}"</span>
+                                    @endif
+                                    @if(request('jenis_kelamin'))
+                                        <span class="badge bg-success me-2">Jenis Kelamin: {{ request('jenis_kelamin') }}</span>
+                                    @endif
+                                    <span class="badge bg-info">{{ $wargas->total() }} hasil</span>
+                                </small>
+                            </div>
+                        @endif
+                    </div>
+                </form>
             </div>
-          </div>
         </div>
-        @endforeach
-      </div>
 
-      <!-- Jika tidak ada data -->
-      @if($wargas->isEmpty())
-        <div class="text-center mt-5">
-          <div class="empty-state">
-            <i class="fas fa-users fa-3x text-muted mb-3"></i>
-            <h5 class="text-muted">Belum ada data warga</h5>
-            <p class="text-muted">Tambahkan data warga pertama Anda</p>
-            <a href="{{ route('warga.create') }}" class="btn btn-primary mt-2">
-              <i class="fas fa-plus me-2"></i>Tambah Warga Pertama
+        <!-- Statistik Quick Info -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="card bg-primary text-white">
+                    <div class="card-body text-center py-3">
+                        <h5 class="card-title mb-1">{{ \App\Models\Warga::count() }}</h5>
+                        <p class="card-text mb-0 small">Total Warga</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card bg-success text-white">
+                    <div class="card-body text-center py-3">
+                        <h5 class="card-title mb-1">{{ \App\Models\Warga::where('jenis_kelamin', 'Laki-laki')->count() }}</h5>
+                        <p class="card-text mb-0 small">Laki-laki</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card bg-info text-white">
+                    <div class="card-body text-center py-3">
+                        <h5 class="card-title mb-1">{{ \App\Models\Warga::where('jenis_kelamin', 'Perempuan')->count() }}</h5>
+                        <p class="card-text mb-0 small">Perempuan</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card bg-warning text-white">
+                    <div class="card-body text-center py-3">
+                        <h5 class="card-title mb-1">{{ \App\Models\Warga::where('status', 'aktif')->count() }}</h5>
+                        <p class="card-text mb-0 small">Aktif</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Header dengan Tombol Tambah -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div class="alert alert-light mb-0 flex-grow-1 me-3">
+                <p class="mb-0">
+                    <i class="fas fa-info-circle me-2"></i>
+                    <small>Informasi warga bersifat internal dan digunakan untuk pelayanan medis dan pemantauan kesehatan masyarakat.</small>
+                </p>
+            </div>
+            <a href="{{ route('warga.create') }}" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Tambah Warga
             </a>
-          </div>
         </div>
-      @endif
 
-      <!-- Pagination -->
-      @if($wargas->hasPages())
-        <div class="d-flex justify-content-center mt-5">
-          {{ $wargas->links() }}
+        <!-- Card List Warga -->
+        <div class="row gy-4">
+            @foreach ($wargas as $warga)
+            <div class="col-lg-4 col-md-6">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body d-flex flex-column">
+                        <!-- Header Card -->
+                        <div class="card-header bg-transparent border-0 px-0 pt-0 d-flex justify-content-between align-items-start">
+                            <h5 class="card-title mb-0">{{ $warga->nama }}</h5>
+                            <div class="d-flex flex-column align-items-end">
+                                <span class="badge {{ $warga->status == 'aktif' ? 'bg-success' : 'bg-warning' }} mb-1">
+                                    {{ ucfirst($warga->status) }}
+                                </span>
+                                <span class="badge {{ $warga->jenis_kelamin == 'Laki-laki' ? 'bg-primary' : 'bg-pink' }}">
+                                    {{ $warga->jenis_kelamin }}
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Content Card -->
+                        <div class="card-content flex-grow-1">
+                            <div class="warga-info">
+                                <p class="card-text mb-2">
+                                    <small class="text-muted">
+                                        <i class="fas fa-id-card me-2"></i><strong>NIK:</strong> {{ $warga->nik }}
+                                    </small>
+                                </p>
+                                <p class="card-text mb-2">
+                                    <small class="text-muted">
+                                        <i class="fas fa-user me-2"></i><strong>Usia:</strong> {{ $warga->usia }} tahun
+                                    </small>
+                                </p>
+                                <p class="card-text mb-2">
+                                    <small class="text-muted">
+                                        <i class="fas fa-map-marker-alt me-2"></i><strong>Alamat:</strong><br>
+                                        <span class="ms-3">{{ Str::limit($warga->alamat, 60) }}</span>
+                                    </small>
+                                </p>
+                                <p class="card-text">
+                                    <small class="text-muted">
+                                        <i class="fas fa-clinic-medical me-2"></i><strong>Posyandu:</strong><br>
+                                        @if($warga->posyandu)
+                                            <span class="badge bg-secondary ms-3">{{ $warga->posyandu->nama }}</span>
+                                        @else
+                                            <span class="badge bg-light text-dark ms-3">Belum Terdaftar</span>
+                                        @endif
+                                    </small>
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Footer Card dengan Action Buttons -->
+                        <div class="card-footer bg-transparent border-0 px-0 pb-0">
+                            <div class="d-flex justify-content-between gap-2">
+                                <a href="{{ route('warga.show', $warga->id) }}" class="btn btn-info btn-sm flex-fill">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                <a href="{{ route('warga.edit', $warga->id) }}" class="btn btn-warning btn-sm flex-fill">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <form action="{{ route('warga.destroy', $warga->id) }}" method="POST" 
+                                      onsubmit="return confirm('Yakin ingin menghapus data warga ini?')"
+                                      class="flex-fill">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm w-100">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @endforeach
         </div>
-      @endif
+
+        <!-- Jika tidak ada data -->
+        @if($wargas->isEmpty())
+            <div class="text-center mt-5">
+                <div class="empty-state">
+                    <i class="fas fa-users fa-3x text-muted mb-3"></i>
+                    <h5 class="text-muted">
+                        @if(request('search_warga') || request('jenis_kelamin'))
+                            Tidak ditemukan warga dengan kriteria yang dipilih
+                        @else
+                            Belum ada data warga yang terdaftar
+                        @endif
+                    </h5>
+                    @if(request('search_warga') || request('jenis_kelamin'))
+                        <a href="{{ url('/') }}#warga" class="btn btn-primary mt-2">
+                            <i class="fas fa-refresh me-2"></i>Tampilkan Semua Data
+                        </a>
+                    @else
+                        <a href="{{ route('warga.create') }}" class="btn btn-primary mt-2">
+                            <i class="fas fa-plus me-2"></i>Tambah Warga Pertama
+                        </a>
+                    @endif
+                </div>
+            </div>
+        @endif
+
+        <!-- Pagination untuk Warga -->
+        @if($wargas->hasPages())
+            <div class="d-flex justify-content-between align-items-center mt-4">
+                <div>
+                    <p class="mb-0 text-muted">
+                        Menampilkan {{ $wargas->firstItem() }} sampai {{ $wargas->lastItem() }} 
+                        dari {{ $wargas->total() }} warga
+                        
+                        @if(request('search_warga') || request('jenis_kelamin'))
+                            <span class="badge bg-info ms-2">
+                                @if(request('search_warga')) Pencarian: "{{ request('search_warga') }}" @endif
+                                @if(request('jenis_kelamin')) | Filter: {{ request('jenis_kelamin') }} @endif
+                            </span>
+                        @endif
+                    </p>
+                </div>
+                <div>
+                    <nav>
+                        <ul class="pagination pagination-sm mb-0">
+                            {{-- Previous Page Link --}}
+                            @if ($wargas->onFirstPage())
+                                <li class="page-item disabled">
+                                    <span class="page-link">&laquo;</span>
+                                </li>
+                            @else
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ $wargas->previousPageUrl() }}#warga">&laquo;</a>
+                                </li>
+                            @endif
+
+                            {{-- Pagination Elements --}}
+                            @php
+                                $current = $wargas->currentPage();
+                                $last = $wargas->lastPage();
+                                $start = max(1, $current - 2);
+                                $end = min($last, $current + 2);
+                            @endphp
+
+                            {{-- Page Number Links --}}
+                            @for ($i = $start; $i <= $end; $i++)
+                                <li class="page-item {{ $i == $current ? 'active' : '' }}">
+                                    <a class="page-link" href="{{ $wargas->url($i) }}#warga">{{ $i }}</a>
+                                </li>
+                            @endfor
+
+                            {{-- Next Page Link --}}
+                            @if ($wargas->hasMorePages())
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ $wargas->nextPageUrl() }}#warga">&raquo;</a>
+                                </li>
+                            @else
+                                <li class="page-item disabled">
+                                    <span class="page-link">&raquo;</span>
+                                </li>
+                            @endif
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        @endif
     </div>
-  </section>
+</section>
 
   <!-- Users Section -->
   <section id="users" class="users section light-background">

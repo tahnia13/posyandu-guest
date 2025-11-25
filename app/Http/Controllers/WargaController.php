@@ -12,7 +12,7 @@ class WargaController extends Controller
     {
         $wargas = Warga::with('posyandu')
             ->orderBy('created_at', 'desc')
-            ->paginate(10);
+            ->paginate(6); // 6 data per halaman untuk tampilan card
             
         $posyandus = Posyandu::all();
         
@@ -39,7 +39,8 @@ class WargaController extends Controller
 
         Warga::create($request->all());
 
-        return redirect()->route('posyandu.index')->with('success', 'Data warga berhasil ditambahkan.');
+        // PERBAIKI REDIRECT KE WARGA.INDEX BUKAN POSYANDU.INDEX
+        return redirect()->route('warga.index')->with('success', 'Data warga berhasil ditambahkan.');
     }
 
     public function show(Warga $warga)
@@ -67,19 +68,20 @@ class WargaController extends Controller
 
         $warga->update($request->all());
 
-        return redirect()->route('posyandu.index')->with('success', 'Data warga berhasil diperbarui.');
+        // PERBAIKI REDIRECT KE WARGA.INDEX BUKAN POSYANDU.INDEX
+        return redirect()->route('warga.index')->with('success', 'Data warga berhasil diperbarui.');
     }
 
     public function destroy(Warga $warga)
     {
         $warga->delete();
 
-        return redirect()->route('posyandu.index')->with('success', 'Data warga berhasil dihapus.');
+        // PERBAIKI REDIRECT KE WARGA.INDEX BUKAN POSYANDU.INDEX
+        return redirect()->route('warga.index')->with('success', 'Data warga berhasil dihapus.');
     }
 
-    // Tambahkan constructor di kedua controller
     public function __construct()
     {
-    //$this->middleware('auth');
+        // $this->middleware('auth');
     }
 }

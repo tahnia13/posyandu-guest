@@ -10,7 +10,9 @@ class PosyanduSeeder extends Seeder
 {
     public function run()
     {
-        // Buat 10 data posyandu menggunakan factory
-        Posyandu::factory()->count(10)->create();
+        // Buat 100 data posyandu
+        Posyandu::factory()->count(100)->create();
+        
+        $this->command->info('✅ Berhasil membuat 100 data posyandu!');
     }
 }
