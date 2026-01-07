@@ -69,7 +69,7 @@ class PosyanduController extends Controller
             Media::create([
                 'ref_table' => 'posyandu',
                 'ref_id'    => $posyandu->posyandu_id,
-                'file_name' => $path, // ✅ PATH DISIMPAN DI SINI
+                'file_name' => $path, 
                 'caption'   => 'Foto Posyandu',
                 'mime_type' => $file->getClientMimeType(),
                 'sort_order'=> 1,
@@ -116,7 +116,7 @@ class PosyanduController extends Controller
 
             $oldMedia = $posyandu->media()->first();
             if ($oldMedia) {
-                Storage::disk('public')->delete($oldMedia->file_name); // ✅ FIX
+                Storage::disk('public')->delete($oldMedia->file_name);  
                 $oldMedia->delete();
             }
 
@@ -126,7 +126,7 @@ class PosyanduController extends Controller
             Media::create([
                 'ref_table' => 'posyandu',
                 'ref_id'    => $posyandu->posyandu_id,
-                'file_name' => $path, // ✅ FIX
+                'file_name' => $path, 
                 'caption'   => 'Foto Posyandu',
                 'mime_type' => $file->getClientMimeType(),
                 'sort_order'=> 1,
@@ -141,7 +141,7 @@ class PosyanduController extends Controller
     public function destroy(Posyandu $posyandu)
     {
         foreach ($posyandu->media as $media) {
-            Storage::disk('public')->delete($media->file_name); // ✅ FIX
+            Storage::disk('public')->delete($media->file_name); 
             $media->delete();
         }
 

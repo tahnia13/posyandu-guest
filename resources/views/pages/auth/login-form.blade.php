@@ -132,7 +132,7 @@
 
             <h2 class="login-title">
                 <i class="fas fa-leaf me-2"></i>
-                Login Sistem Inventaris
+                Login Posyandu Desa
             </h2>
 
             {{-- ALERT SUCCESS --}}

@@ -54,7 +54,7 @@ class CatatanImunisasiController extends Controller
             'nakes'        => $request->nakes,
         ]);
 
-        // ✅ UPLOAD KARTU IMUNISASI (FIX)
+        // UPLOAD KARTU IMUNISASI (FIX)
         if ($request->hasFile('kartu')) {
 
             $file = $request->file('kartu');
@@ -109,7 +109,7 @@ class CatatanImunisasiController extends Controller
             'nakes'        => $request->nakes,
         ]);
 
-        // ✅ GANTI KARTU
+        // GANTI KARTU
         if ($request->hasFile('kartu')) {
 
             foreach ($catatan_imunisasi->media as $media) {

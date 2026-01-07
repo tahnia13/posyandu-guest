@@ -32,7 +32,6 @@ class AuthController extends Controller
      */
     public function login(Request $request)
     {
-        // VALIDASI LOGIN
         $validator = Validator::make($request->all(), [
             'email'    => 'required|email|max:255',
             'password' => 'required|min:3',
@@ -75,7 +74,6 @@ class AuthController extends Controller
      */
     public function register(Request $request)
     {
-        //  VALIDASI REGISTER
         $validator = Validator::make($request->all(), [
             'name'                  => 'required|max:255',
             'email'                 => 'required|email|max:255|unique:users,email',

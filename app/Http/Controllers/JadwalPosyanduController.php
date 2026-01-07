@@ -14,12 +14,12 @@ class JadwalPosyanduController extends Controller
     {
         $query = JadwalPosyandu::with(['posyandu', 'media']);
 
-        // 🔍 Filter Posyandu
+        // Filter Posyandu
         if ($request->filled('posyandu_id')) {
             $query->where('posyandu_id', $request->posyandu_id);
         }
 
-        // 🔍 Filter tanggal
+        // Filter tanggal
         if ($request->filled('tanggal')) {
             $query->whereDate('tanggal', $request->tanggal);
         }
@@ -54,7 +54,7 @@ class JadwalPosyanduController extends Controller
             'keterangan'  => $request->keterangan,
         ]);
 
-        // 📸 Simpan poster kegiatan
+        // Simpan poster kegiatan
         if ($request->hasFile('poster')) {
             $file = $request->file('poster');
             $path = $file->store('jadwal_posyandu', 'public');
@@ -106,7 +106,7 @@ class JadwalPosyanduController extends Controller
             'keterangan' => $request->keterangan,
         ]);
 
-        // 📸 Ganti poster jika upload baru
+        // Ganti poster jika upload baru
         if ($request->hasFile('poster')) {
 
             // hapus poster lama

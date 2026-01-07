@@ -164,7 +164,7 @@
 
         {{-- PAGINATION --}}
         <div class="mt-5 d-flex justify-content-center">
-            {{ $kaders->links() }}
+            {{ $kaders->links('pagination::bootstrap-5') }}
         </div>
 
     </div>

@@ -46,7 +46,7 @@ class KaderPosyanduController extends Controller
     {
         $request->validate([
             'posyandu_id' => 'required|exists:posyandus,posyandu_id',
-            'warga_id'    => 'required|exists:warga,warga_id', // ✅ FIX
+            'warga_id'    => 'required|exists:warga,warga_id', 
             'peran'       => 'required|string|max:100',
             'mulai_tugas' => 'required|date',
         ]);

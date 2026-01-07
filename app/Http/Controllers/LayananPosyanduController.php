@@ -13,12 +13,12 @@ class LayananPosyanduController extends Controller
     {
         $query = LayananPosyandu::with(['jadwal.posyandu', 'warga']);
 
-        // 🔍 filter jadwal
+        // filter jadwal
         if ($request->filled('jadwal_id')) {
             $query->where('jadwal_id', $request->jadwal_id);
         }
 
-        // 🔍 search warga
+        // search warga
         if ($request->filled('search')) {
             $query->whereHas('warga', function ($q) use ($request) {
                 $q->where('nama', 'like', "%{$request->search}%")
